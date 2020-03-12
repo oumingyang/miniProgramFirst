@@ -1,0 +1,37 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/order/order",
+    "pages/total/total"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "ARD",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+      "pagePath": "pages/index/index",
+      "text": "首页",
+      "iconPath": "icons/home.png",
+      "selectedIconPath": "icons/homeselected.png"
+    },
+    {
+      "pagePath": "pages/order/order",
+      "text": "订餐入口",
+      "iconPath": "icons/orderfood.png",
+      "selectedIconPath": "icons/orderfoodselected.png"
+    },
+    {
+      "pagePath": "pages/total/total",
+      "text": "信息检索",
+      "iconPath": "icons/storeOrder.png",
+      "selectedIconPath": "icons/storeOrderselected.png"
+    }    
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

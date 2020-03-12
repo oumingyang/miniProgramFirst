@@ -1,5 +1,7 @@
 {
 	"description": "Project configuration file",
+	"miniprogramRoot": "inspurArd/",
+	"cloudfunctionRoot": "cloudfunctions/",
 	"packOptions": {
 		"ignore": []
 	},

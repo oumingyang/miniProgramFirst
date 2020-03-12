@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+
+  },
+  "backgroundColor": "#fffff",
+  "navigationBarBackgroundColor": "#576b95",
+  "navigationBarTitleText": "订餐信息检索",
+  "navigationBarTextStyle": "white"
+}

@@ -1,0 +1,8 @@
+{
+  "backgroundColor": "#fffff",
+  "navigationBarBackgroundColor": "#576b95",
+  "navigationBarTitleText": "个人订餐",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    }
+}
