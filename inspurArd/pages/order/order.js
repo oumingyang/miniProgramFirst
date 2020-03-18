@@ -4,17 +4,23 @@ Page({
   data: {
 
     date: "2020-03-01",
+    
+    departments: [],
+    departmentIndex: 0,
 
-    branches: ["研发一处", "研发二处", "研发三处", "研发四处", "研发五处", "部门总"],
+    branches: [],
     branchIndex: 0,
 
-    lunches: ["无", "套餐 + 1份米饭", "套餐 + 2份米饭", "焖面"],
+    lunches: [],
     lunchIndex: 0,
 
-    dinners: ["无", "套餐 + 1份米饭", "套餐 + 2份米饭", "焖面"],
+    dinners: [],
     dinnerIndex: 0,
 
-    halal: ["否", "是"],
+    complementaryFood: [],
+    complementaryFoodIndex: 0,
+
+    halal: [],
     halalIndex: 0,
 
     name: "张三",
@@ -28,6 +34,52 @@ Page({
     warning: "提交成功"
 
   },
+  onLoad: function(){
+    //1. 从云端加载数据完成初始化
+    //1.1 创建数据库引用
+    const db = wx.cloud.database()
+    //1.2 获取数据库集合引用
+    const menuInformationCollection = db.collection("t_menu")
+    
+    //1.3 查询菜单数据
+    menuInformationCollection.doc('253e38e5-1c36-4b09-ac80-647593db4e9d').get().then(res => {
+    //  console.log("查询成功", res)
+      this.setData({
+        lunches: res.data.menuDate.menu,
+        dinners: res.data.menuDate.menu,
+        halal: res.data.menuDate.halal,
+        complementaryFood: res.data.menuDate.complementaryFood
+      })
+    }).catch(err => {
+      console.log("查询失败", err)
+    })
+    // 查询部门信息
+    wx.cloud.callFunction({
+      // 要调用的云函数名称
+      name: 'getDepartment'
+    }).then(res => {
+      console.log("查询成功", res)
+      let index = 0
+      let departmentDates = []
+      let branchDates = []
+      let departmentDate = ""
+      let branchDate = []
+      for (index in res.result.data){
+        departmentDate = res.result.data[index].departmentName
+        branchDate = res.result.data[index].branches
+        departmentDates.push(departmentDate)
+        branchDates.push(branchDate)
+      }
+      
+      this.setData({
+        departments: departmentDates,
+        branches: branchDates
+      })
+      
+    }).catch(err => {
+      console.log("提交失败", err)
+    })
+  },
 
   formInputChange(e) {
     const { field } = e.currentTarget.dataset
@@ -39,6 +91,13 @@ Page({
   bindDateChange: function (e) {
     this.setData({
       date: e.detail.value
+    })
+  },
+  bindDepartmentChange: function (e) {
+    console.log('picker branch 发生选择改变，携带值为', e.detail.value);
+
+    this.setData({
+      departmentIndex: e.detail.value
     })
   },
   bindBranchChange: function (e) {
@@ -78,36 +137,55 @@ Page({
     //1."准备数据---------"
     let date = this.data.date
     let name = this.data.name
+    let departmentIndex = this.data.departmentIndex
     let branchIndex = this.data.branchIndex
     let lunchIndex = this.data.lunchIndex
     let dinnerIndex = this.data.dinnerIndex
     let halalIndex = this.data.halalIndex
-    let branch = this.data.branches[branchIndex]
+    let department = this.data.departments[departmentIndex]
+    let branch = this.data.branches[departmentIndex][branchIndex]
     let lunch = this.data.lunches[lunchIndex]
     let dinner = this.data.dinners[dinnerIndex]
     let halal = this.data.halal[halalIndex]
     //2. 将数据存储到云数据库
-    //2.1 创建数据库引用
-    const db = wx.cloud.database()
-    //2.2 获取数据库集合引用
-    const orderInformationCollection = db.collection("t_departmentOrderInformation")
-    //2.3 通过集合往集合内部添加数据
-    orderInformationCollection.add({
+
+    wx.cloud.callFunction({
+      // 要调用的云函数名称
+      name: 'removeData',
+      // 传递给云函数的event参数
       data: {
         date: date,
         name: name,
-        branch: branch,
-        lunch: lunch,
-        dinner: dinner,
-        halal: halal
+        department: department,
+        branch: branch
       }
     }).then(res => {
-      console.log("提交成功", res)
-      this.setData({
-        handupShowed: false,
-        pageShowed: false
-        
+      console.log("垃圾数据回收成功", res)
+      //添加数据
+      wx.cloud.callFunction({
+        // 要调用的云函数名称
+        name: 'addData',
+        // 传递给云函数的event参数
+        data: {
+          date: date,
+          name: name,
+          department: department,
+          branch: branch,
+          lunch: lunch,
+          dinner: dinner,
+          halal: halal
+        }
+      }).then(res => {
+        console.log("数据添加成功", res)
+        this.setData({
+          handupShowed: false,
+          pageShowed: false
+
+        })
+      }).catch(err => {
+        console.log("提交失败", err)
       })
+
     }).catch(err => {
       console.log("提交失败", err)
     })

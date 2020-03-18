@@ -1,13 +1,26 @@
 /* pages/total/index.wxss */
-.searchbar-result{
-    margin-top: 0;
-    font-size: 14px;
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60rpx 0;
+  box-sizing: border-box;
+} 
+.my-submit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: green
+
 }
-.searchbar-result .weui-cell__bd{
-  padding: 2px 0 2px 20px;
-  color: #666;
+.my-text{
+  font-size: 20px
 }
-.searchbar-result:before{
-    display: none;
+.my-view{
+  padding: 20rpx
 }
+.my-cell{position:relative;display:-webkit-flex;display:flex;align-items:center}
 

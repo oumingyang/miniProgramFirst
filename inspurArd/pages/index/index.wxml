@@ -7,7 +7,28 @@
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view>
+  <text class="my-txtHead">本周菜单</text>
+  <text class="my-waring">每日17:00 后台停止接单</text>
+  <text class="my-text">
+    星期一 -----------------------
+    午餐：{{mondayLunch}} 
+    晚餐：{{mondayDinner}} 
+    特色菜：{{mondayOption}}
+    星期二 -----------------------
+    午餐：{{tuesdayLunch}} 
+    晚餐：{{tuesdaydayDinner}} 
+    特色菜：{{tuesdayOption}}
+    星期三 -----------------------
+    午餐：{{wednesdayLunch}} 
+    晚餐：{{wednesdayDinner}} 
+    特色菜：{{wednesdayOption}}
+    星期四 -----------------------
+    午餐：{{thursdayLunch}} 
+    晚餐：{{thursdayDinner}} 
+    特色菜：{{thursdayOption}}
+    星期五 -----------------------
+    午餐：{{fridayLunch}} 
+    晚餐：{{fridayDinner}} 
+    特色菜：{{fridayOption}}
+  </text>
 </view>
