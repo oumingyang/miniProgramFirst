@@ -19,7 +19,6 @@ function utc_beijing(utc_datetime) {
   // 时间戳转为时间
   // var beijing_datetime = new Date(parseInt(timestamp) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
   var beijing_datetime = new Date(parseInt(timestamp) * 1000)
-  console.log(beijing_datetime)
   return beijing_datetime; // 2017-03-31 16:02:06
 }
 

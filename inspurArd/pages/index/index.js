@@ -65,7 +65,6 @@ Page({
 
     //1.3 查询菜单数据
     menuInformationCollection.get().then(res => {
-      console.log("查询成功", res)
       this.setData({
         mondayLunch: res.data[0].Monday.slice(0, 3),
         mondayDinner: res.data[0].Monday.slice(4, 7),

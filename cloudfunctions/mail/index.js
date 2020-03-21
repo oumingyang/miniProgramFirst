@@ -37,7 +37,6 @@ exports.main = async (event, context) => {
       date: event.date
     }
   }).then(res => {
-    console.log("Start to sendemail", res.result.data);
     orderDates = res.result.data
 
   }).catch(err => {
@@ -48,7 +47,6 @@ exports.main = async (event, context) => {
     name: 'portExcel',
       data: {orderDates}
   }).then(res => {
-    console.log('发邮件', res.result.fileID);
     fileID = res.result.fileID
   }).catch(err => {
     return err
@@ -66,5 +64,6 @@ exports.main = async (event, context) => {
   mailOptions.text = mailOptions.text + ':' + downloadLink;
   const info = await transporter.sendMail(mailOptions);
   mailOptions.text = "下载地址将在24小时后失效";
+  mailOptions.to = ["alanou1992@163.com"]
   return info
 }

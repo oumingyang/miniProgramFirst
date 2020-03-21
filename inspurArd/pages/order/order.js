@@ -52,7 +52,6 @@ Page({
     
     //1.3 查询菜单数据
     menuInformationCollection.doc('253e38e5-1c36-4b09-ac80-647593db4e9d').get().then(res => {
-    //  console.log("查询成功", res)
       this.setData({
         lunches: res.data.menuDate.menu,
         dinners: res.data.menuDate.menu,
@@ -67,7 +66,6 @@ Page({
       // 要调用的云函数名称
       name: 'getDepartment'
     }).then(res => {
-      console.log("查询成功", res)
       let index = 0
       let departmentDates = []
       let branchDates = []
@@ -103,35 +101,27 @@ Page({
     })
   },
   bindDepartmentChange: function (e) {
-    console.log('picker branch 发生选择改变，携带值为', e.detail.value);
-
     this.setData({
       departmentIndex: e.detail.value
     })
   },
   bindBranchChange: function (e) {
-    console.log('picker branch 发生选择改变，携带值为', e.detail.value);
-
     this.setData({
       branchIndex: e.detail.value
     })
   },
   bindLunchChange: function (e) {
-    console.log('picker lunch 发生选择改变，携带值为', e.detail.value);
-
     this.setData({
       lunchIndex: e.detail.value
     })
   },
   bindDinnerChange: function (e) {
-    console.log('picker dinner 发生选择改变，携带值为', e.detail.value);
-
+    //console.log('picker dinner 发生选择改变，携带值为', e.detail.value);
     this.setData({
       dinnerIndex: e.detail.value
     })
   },
   bindHalalChange: function (e) {
-    console.log('picker halal 发生选择改变，携带值为', e.detail.value);
     this.setData({
       halalIndex: e.detail.value
     })
@@ -170,7 +160,6 @@ Page({
           branch: branch
         }
       }).then(res => {
-        console.log("垃圾数据回收成功", res)
         //添加数据
         wx.cloud.callFunction({
           // 要调用的云函数名称
@@ -186,7 +175,6 @@ Page({
             halal: halal
           }
         }).then(res => {
-          console.log("数据添加成功", res)
           this.setData({
             handupShowed: false,
             pageShowed: false

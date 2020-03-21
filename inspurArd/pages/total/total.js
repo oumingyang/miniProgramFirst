@@ -46,7 +46,6 @@ Page({
       // 要调用的云函数名称
       name: 'getDepartment'
     }).then(res => {
-      console.log("查询成功", res)
       let index = 0
       let departmentDates = []
       let branchDates = []
@@ -75,15 +74,11 @@ Page({
     })
   },
   bindDepartmentChange: function (e) {
-    console.log('picker branch 发生选择改变，携带值为', e.detail.value);
-
     this.setData({
       departmentIndex: e.detail.value
     })
   },
   bindBranchChange: function (e) {
-    console.log('picker branch 发生选择改变，携带值为', e.detail.value);
-
     this.setData({
       branchIndex: e.detail.value
     })

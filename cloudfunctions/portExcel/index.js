@@ -9,7 +9,6 @@ const xlsx = require('node-xlsx');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  console.log(event.orderDates)
   //添加数据
   //将数据写入Excel，存入远端
   try {
