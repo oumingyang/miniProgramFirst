@@ -57,7 +57,7 @@
               <view class="weui-cell__hd">
                   <view class="weui-label">姓名</view>
               </view>
-              <view class="weui-cell__bd">{{name}}</view>
+              <view class="weui-cell__bd">{{userName}}</view>
             </view>
             <view class="weui-cell">
               <view class="weui-cell__hd">

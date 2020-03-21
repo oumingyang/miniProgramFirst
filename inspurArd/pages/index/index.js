@@ -56,8 +56,6 @@ Page({
         }
       })
     }
-    // 获取服务器时间
-    this.globalData = { serverDate: this.getserverDate() }
     //1.1 创建数据库引用
     const db = wx.cloud.database()
     //1.2 获取数据库集合引用
@@ -97,14 +95,6 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-  },
-  //获取服务器时间
-  getserverDate: function () {
-    wx.cloud.callFunction({
-      name: 'getServerDate',
-      success: function (res) {
-        getApp().globalData.serverDate = res.result
-      }
-    })
   }
+
 })

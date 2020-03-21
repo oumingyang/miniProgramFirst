@@ -1,14 +1,14 @@
 // pages/order/order.js
+
 var serverTime = require('../../utils/utils.js');
-const app = getApp()
 
 Page({
   
   data: {
 
     date: "",
-    today: '',
-    
+    today: "",
+
     departments: [],
     departmentIndex: 0,
 
@@ -39,11 +39,7 @@ Page({
 
   },
   onLoad: function(){
-    //获得系统时间
-    this.setData({
-      today: serverTime.formatTime(serverTime.utc_beijing(app.globalData.serverDate)),
-      date: serverTime.formatTime(serverTime.utc_beijing(app.globalData.serverDate))
-    })
+    
     //1. 从云端加载数据完成初始化
     //1.1 创建数据库引用
     const db = wx.cloud.database()
@@ -80,12 +76,27 @@ Page({
       
       this.setData({
         departments: departmentDates,
-        branches: branchDates
+        branches: branchDates,
       })
       
     }).catch(err => {
       console.log("提交失败", err)
     })
+  },
+  onShow: function(){
+    //刷新获得系统时间
+    wx.cloud.callFunction({
+      name: 'getServerDate',
+    }).then(res=>{
+      let nowtime = serverTime.formatTime(serverTime.utc_beijing(res.result.time))
+      this.setData({
+        date: nowtime,
+        today: nowtime
+      })
+    }).catch(err => {
+      console.log("获取系统时间失败", err)
+    })
+    
   },
 
   formInputChange(e) {
@@ -135,7 +146,9 @@ Page({
       })
 
       //1."准备数据---------"
-      let date = this.data.date
+      let date = this.data.date.replace(/\//g, '-')
+      // 将时间格式标准化
+      
       let name = this.data.name
       let departmentIndex = this.data.departmentIndex
       let branchIndex = this.data.branchIndex

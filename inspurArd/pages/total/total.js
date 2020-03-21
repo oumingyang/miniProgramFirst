@@ -2,15 +2,13 @@
 Page({
   data: {
 
-    serverDate: "",
-
     departments: [],
     departmentIndex: 0,
 
     branches: [],
     branchIndex: 0,
 
-    name: "",
+    userName: "",
     branch: "",
     date: "",
     lunch: "",
@@ -59,8 +57,7 @@ Page({
       }
       this.setData({
         departments: departmentDates,
-        branches: branchDates,
-        serverDate: res.result.serverDate
+        branches: branchDates
       })
 
     }).catch(err => {
@@ -86,22 +83,23 @@ Page({
   formInputChange(e) {
     const { field } = e.currentTarget.dataset
     this.setData({
-      name: e.detail.value
+      userName: e.detail.value
     })
   },
+
   submitForm: function () {
 
-    if (this.data.name){
+    if (this.data.userName){
       this.setData({
         submit: "提交中"
-
       })
-      if(this.data.name.search('@')){
+      if(/@/.test(this.data.userName)){
+
         wx.cloud.callFunction({
           name: 'mail',
           data:{
             date: this.data.date,
-            mailAddress: this.data.name
+            mailAddress: this.data.userName
           }
         }).then(res => {
           this.setData({
@@ -114,7 +112,7 @@ Page({
 
         //1."准备数据---------"
         let date = this.data.date
-        let name = this.data.name
+        let userNameData = this.data.userName
         let departmentIndex = this.data.departmentIndex
         let branchIndex = this.data.branchIndex
         let department = this.data.departments[departmentIndex]
@@ -141,11 +139,11 @@ Page({
             date: date,
             department: department,
             branch: branch,
-            name: name
+            name: userNameData
           }
         }).then(res => {
           console.log("订单查询成功", res)
-          if (name == "hello" || name == "hi") {
+          if (userNameData == "hello" || userNameData == "hi") {
             for (index in res.result.data) {
               switch (res.result.data[index].lunch) {
                 case "套餐_米饭1":
@@ -247,7 +245,7 @@ Page({
               }
 
             }
-            if (name == "hello") {
+            if (userNameData == "hello") {
               this.setData({
                 pageShowed: false,
                 departmentShowed: true,
@@ -282,21 +280,30 @@ Page({
             })
 
           } else {
-            this.setData({
-              pageShowed: false,
-              personalShowed: true,
-              departmentShowed: false,
-              branchShowed: false,
+            if (res.result.data.length == 0){
+              this.setData({
+                submit: "后台无数据",
+                userName: ""
+              })
 
-              name: res.result.data[0].name,
-              date: res.result.data[0].date,
-              department: res.result.data[0].department,
-              branch: res.result.data[0].branch,
-              lunch: res.result.data[0].lunch,
-              dinner: res.result.data[0].dinner,
-              halal: res.result.data[0].halal
+            }else{
+              this.setData({
+                pageShowed: false,
+                personalShowed: true,
+                departmentShowed: false,
+                branchShowed: false,
 
-            })
+                userName: res.result.data[0].name,
+                date: res.result.data[0].date,
+                department: res.result.data[0].department,
+                branch: res.result.data[0].branch,
+                lunch: res.result.data[0].lunch,
+                dinner: res.result.data[0].dinner,
+                halal: res.result.data[0].halal
+
+              })
+            }
+            
           }
 
         }).catch(err => {
