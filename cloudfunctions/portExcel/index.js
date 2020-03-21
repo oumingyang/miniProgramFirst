@@ -13,7 +13,7 @@ exports.main = async (event, context) => {
   //将数据写入Excel，存入远端
   try {
     //1,定义excel表格名
-    let dataCVS = "订餐明细" + ".xlsx";
+    let dataCVS = event.orderDates[0].date + ".xlsx";
     //2,定义存储数据的
     let alldata = [];
     let row = ['日期', '姓名', '一级部门', '二级部门', '午餐', '晚餐', '清真']; //表属性
