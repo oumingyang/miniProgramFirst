@@ -1,9 +1,13 @@
-// pages/order/index.js
+// pages/order/order.js
+var serverTime = require('../../utils/utils.js');
+const app = getApp()
+
 Page({
   
   data: {
 
-    date: "2020-03-01",
+    date: "",
+    today: '',
     
     departments: [],
     departmentIndex: 0,
@@ -23,7 +27,7 @@ Page({
     halal: [],
     halalIndex: 0,
 
-    name: "张三",
+    name: "",
 
     pageShowed: true,
     handupShowed: true,
@@ -35,6 +39,11 @@ Page({
 
   },
   onLoad: function(){
+    //获得系统时间
+    this.setData({
+      today: serverTime.formatTime(serverTime.utc_beijing(app.globalData.serverDate)),
+      date: serverTime.formatTime(serverTime.utc_beijing(app.globalData.serverDate))
+    })
     //1. 从云端加载数据完成初始化
     //1.1 创建数据库引用
     const db = wx.cloud.database()
@@ -129,66 +138,74 @@ Page({
   },
   submitForm: function () {
 
-    this.setData({
-      submit: "提交中"
+    if(this.data.name){
+      this.setData({
+        submit: "提交中"
 
-    })
+      })
 
-    //1."准备数据---------"
-    let date = this.data.date
-    let name = this.data.name
-    let departmentIndex = this.data.departmentIndex
-    let branchIndex = this.data.branchIndex
-    let lunchIndex = this.data.lunchIndex
-    let dinnerIndex = this.data.dinnerIndex
-    let halalIndex = this.data.halalIndex
-    let department = this.data.departments[departmentIndex]
-    let branch = this.data.branches[departmentIndex][branchIndex]
-    let lunch = this.data.lunches[lunchIndex]
-    let dinner = this.data.dinners[dinnerIndex]
-    let halal = this.data.halal[halalIndex]
-    //2. 将数据存储到云数据库
+      //1."准备数据---------"
+      let date = this.data.date
+      let name = this.data.name
+      let departmentIndex = this.data.departmentIndex
+      let branchIndex = this.data.branchIndex
+      let lunchIndex = this.data.lunchIndex
+      let dinnerIndex = this.data.dinnerIndex
+      let halalIndex = this.data.halalIndex
+      let department = this.data.departments[departmentIndex]
+      let branch = this.data.branches[departmentIndex][branchIndex]
+      let lunch = this.data.lunches[lunchIndex]
+      let dinner = this.data.dinners[dinnerIndex]
+      let halal = this.data.halal[halalIndex]
+      //2. 将数据存储到云数据库
 
-    wx.cloud.callFunction({
-      // 要调用的云函数名称
-      name: 'removeData',
-      // 传递给云函数的event参数
-      data: {
-        date: date,
-        name: name,
-        department: department,
-        branch: branch
-      }
-    }).then(res => {
-      console.log("垃圾数据回收成功", res)
-      //添加数据
       wx.cloud.callFunction({
         // 要调用的云函数名称
-        name: 'addData',
+        name: 'removeData',
         // 传递给云函数的event参数
         data: {
           date: date,
           name: name,
           department: department,
-          branch: branch,
-          lunch: lunch,
-          dinner: dinner,
-          halal: halal
+          branch: branch
         }
       }).then(res => {
-        console.log("数据添加成功", res)
-        this.setData({
-          handupShowed: false,
-          pageShowed: false
+        console.log("垃圾数据回收成功", res)
+        //添加数据
+        wx.cloud.callFunction({
+          // 要调用的云函数名称
+          name: 'addData',
+          // 传递给云函数的event参数
+          data: {
+            date: date,
+            name: name,
+            department: department,
+            branch: branch,
+            lunch: lunch,
+            dinner: dinner,
+            halal: halal
+          }
+        }).then(res => {
+          console.log("数据添加成功", res)
+          this.setData({
+            handupShowed: false,
+            pageShowed: false
 
+          })
+        }).catch(err => {
+          console.log("提交失败", err)
         })
+
       }).catch(err => {
         console.log("提交失败", err)
       })
+    }else{
+      this.setData({
+        submit: "姓名不能为空"
 
-    }).catch(err => {
-      console.log("提交失败", err)
-    })
+      })
+
+    }
 
   },
   reSubmitForm: function(){

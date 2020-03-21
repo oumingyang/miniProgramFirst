@@ -17,7 +17,7 @@
                 <view class="weui-label">日期</view>
           </view>
           <view class="weui-cell__bd">
-              <picker data-field="date" mode="date" value="{{date}}" start="2020-03-01" end="2021-02-28" bindchange="bindDateChange">
+              <picker data-field="date" mode="date" value="{{date}}" start="{{today}}" end="2021-02-28" bindchange="bindDateChange">
                   <view class="weui-input">{{date}}</view>
               </picker>
           </view>
@@ -68,7 +68,7 @@
                   <view class="weui-label">是否清真</view>
               </view>
               <view class="weui-cell__bd">
-                  <picker bindchange="bindHalalChange" value="{{halalIndex}}" range="{{halal}}">
+                  <picker bindchange="bindHalalChange" value="{{halalIndex}}" range="{{halal}}" >
                       <view class="weui-select weui-select_in-select-after">{{halal[halalIndex]}}</view>
                   </picker>
               </view>

@@ -9,6 +9,7 @@
   </view>
   <text class="my-txtHead">本周菜单</text>
   <text class="my-waring">每日17:00 后台停止接单</text>
+  <text class="my-waring">特色餐无清真</text>
   <text class="my-text">
     星期一 -----------------------
     午餐：{{mondayLunch}} 
