@@ -1,4 +1,6 @@
 // pages/total/total.js
+var serverTime = require('../../utils/utils.js');
+
 Page({
   data: {
 
@@ -64,6 +66,20 @@ Page({
       console.log("提交失败", err)
     })
   },
+  onShow: function () {
+    //刷新获得系统时间
+    wx.cloud.callFunction({
+      name: 'getServerDate',
+    }).then(res => {
+      let nowDate = serverTime.formatDate(serverTime.utc_beijing(res.result.time))
+      this.setData({
+        date: nowDate,
+      })
+    }).catch(err => {
+      console.log("获取系统时间失败", err)
+    })
+
+  },
 
   bindDateChange: function (e) {
     this.setData({
@@ -108,6 +124,23 @@ Page({
         }).catch(err => {
           console.log(err)
         })
+      }else if(this.data.userName == "superUserDelete"){
+        wx.cloud.callFunction({
+          // 要调用的云函数名称
+          name: 'removeData',
+          // 传递给云函数的event参数
+          data: {
+            date: this.data.date,
+          }
+        }).then(res=>{
+          this.setData({
+            submit: "数据已清理"
+          })
+
+        }).catch(err=>{
+          console.log(err)
+        })
+
       }else{
 
         //1."准备数据---------"
@@ -271,11 +304,13 @@ Page({
               lunchRiceNumber: lunchRiceNumber,
               lunchSteamedRollNumber: lunchSteamedRollNumber,
               lunchOption: lunchOption,
+              lunchHalalNumber: lunchHalalNumber,
 
               dinnerNumber: dinnerNumber,
               dinnerRiceNumber: dinnerRiceNumber,
               dinnerSteamedRollNumber: dinnerSteamedRollNumber,
-              dinnerOption: dinnerOption
+              dinnerOption: dinnerOption,
+              dinnerHalalNumber: dinnerHalalNumber
 
             })
 

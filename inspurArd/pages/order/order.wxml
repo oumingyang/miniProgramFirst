@@ -1,6 +1,6 @@
 <!--pages/order/index.wxml-->
 
-<view class="page" class="container">
+<view class="page" class="container" >
     <view class="page__bd" hidden="{{!pageShowed}}">
        <view class="weui-cells weui-cells_after-title">
           <view class="weui-cell">
@@ -84,6 +84,11 @@
         </view>
         <view class="my-view">
             <button class="weui-btn" type="primary" bindtap="reSubmitForm">{{reSubmit}}</button>
+        </view>
+    </view>
+    <view class="my-submit" hidden="{{warningShowed}}">
+        <view>
+            <text class="my-text">{{warning}}</text>
         </view>
     </view>
 

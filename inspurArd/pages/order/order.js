@@ -31,6 +31,7 @@ Page({
 
     pageShowed: true,
     handupShowed: true,
+    warningShowed: true,
 
     submit: "确定", 
     reSubmit: "再提交一份",
@@ -88,10 +89,21 @@ Page({
     wx.cloud.callFunction({
       name: 'getServerDate',
     }).then(res=>{
-      let nowtime = serverTime.formatTime(serverTime.utc_beijing(res.result.time))
+    
+      if(serverTime.closeServer(serverTime.utc_beijing(res.result.time)))
+      {
+        this.setData({
+          pageShowed: false,
+          handupShowed: true,
+          warningShowed: false,
+          warning: '黄河一去不复返，请明日再来！'
+
+        })
+      }
+      let nowdate = serverTime.formatDate(serverTime.utc_beijing(res.result.time))
       this.setData({
-        date: nowtime,
-        today: nowtime
+        date: nowdate,
+        today: nowdate
       })
     }).catch(err => {
       console.log("获取系统时间失败", err)
